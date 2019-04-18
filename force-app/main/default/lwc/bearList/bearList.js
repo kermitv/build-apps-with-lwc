@@ -3,7 +3,7 @@ import ursusResources from '@salesforce/resourceUrl/ursus_park';
 /** BearController.getAllBears() Apex method */
 import getAllBears from '@salesforce/apex/BearController.getAllBears';
 export default class BearList extends LightningElement {
-
+ 
 	@track bears;
 	@track error;
 	appResources = {
