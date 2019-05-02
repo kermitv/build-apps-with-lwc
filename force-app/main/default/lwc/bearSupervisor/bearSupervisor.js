@@ -1,24 +1,12 @@
-import { LightningElement, track } from 'lwc';
-import ursusResources from '@salesforce/resourceUrl/ursus_park';
-/** BearController.getAllBears() Apex method */
-import getAllBears from '@salesforce/apex/BearController.getAllBears';
-export default class BearList extends LightningElement {
-
-	@track bears;
-	@track error;
-	appResources = {
-		bearSilhouette: ursusResources +'/img/standing-bear-silhouette.png',
-	};
-	connectedCallback() {
-		this.loadBears();
-	}
-	loadBears() {
-		getAllBears()
-			.then(result => {
-				this.bears = result;
-			})
-			.catch(error => {
-				this.error = error;
-			});
+import { LightningElement, api, wire } from 'lwc';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import SUPERVISOR_FIELD from '@salesforce/schema/Bear__c.Supervisor__c';
+const bearFields = [SUPERVISOR_FIELD];
+export default class BearSupervisor extends LightningElement {
+	@api recordId; // Bear Id
+	@wire(getRecord, { recordId: '$recordId', fields: bearFields })
+	bear;
+	get supervisorId() {
+		return getFieldValue(this.bear.data, SUPERVISOR_FIELD);
 	}
 }
